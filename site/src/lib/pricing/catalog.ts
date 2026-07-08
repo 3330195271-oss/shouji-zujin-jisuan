@@ -255,6 +255,83 @@ const PHONE_FAMILIES: FamilySeed[] = [
       { storageLabel: "512GB", basePrice: 8399 },
     ],
   },
+  {
+    category: "phone",
+    launchDate: "2020-11-13",
+    series: "iPhone 12 Pro Max",
+    conditionTypes: ["used"],
+    variants: [
+      { storageLabel: "128GB", basePrice: 9299 },
+      { storageLabel: "256GB", basePrice: 10099 },
+      { storageLabel: "512GB", basePrice: 11899 },
+    ],
+  },
+  {
+    category: "phone",
+    launchDate: "2020-10-23",
+    series: "iPhone 12 Pro",
+    conditionTypes: ["used"],
+    variants: [
+      { storageLabel: "128GB", basePrice: 8499 },
+      { storageLabel: "256GB", basePrice: 9299 },
+      { storageLabel: "512GB", basePrice: 11099 },
+    ],
+  },
+  {
+    category: "phone",
+    launchDate: "2020-11-13",
+    series: "iPhone 12 mini",
+    conditionTypes: ["used"],
+    variants: [
+      { storageLabel: "64GB", basePrice: 5499 },
+      { storageLabel: "128GB", basePrice: 5999 },
+      { storageLabel: "256GB", basePrice: 6799 },
+    ],
+  },
+  {
+    category: "phone",
+    launchDate: "2020-10-23",
+    series: "iPhone 12",
+    conditionTypes: ["used"],
+    variants: [
+      { storageLabel: "64GB", basePrice: 6299 },
+      { storageLabel: "128GB", basePrice: 6799 },
+      { storageLabel: "256GB", basePrice: 7599 },
+    ],
+  },
+  {
+    category: "phone",
+    launchDate: "2019-09-20",
+    series: "iPhone 11 Pro Max",
+    conditionTypes: ["used"],
+    variants: [
+      { storageLabel: "64GB", basePrice: 9599 },
+      { storageLabel: "256GB", basePrice: 10899 },
+      { storageLabel: "512GB", basePrice: 12699 },
+    ],
+  },
+  {
+    category: "phone",
+    launchDate: "2019-09-20",
+    series: "iPhone 11 Pro",
+    conditionTypes: ["used"],
+    variants: [
+      { storageLabel: "64GB", basePrice: 8699 },
+      { storageLabel: "256GB", basePrice: 9999 },
+      { storageLabel: "512GB", basePrice: 11799 },
+    ],
+  },
+  {
+    category: "phone",
+    launchDate: "2019-09-20",
+    series: "iPhone 11",
+    conditionTypes: ["used"],
+    variants: [
+      { storageLabel: "64GB", basePrice: 5499 },
+      { storageLabel: "128GB", basePrice: 5999 },
+      { storageLabel: "256GB", basePrice: 6799 },
+    ],
+  },
 ];
 
 const TABLET_FAMILIES: FamilySeed[] = [
