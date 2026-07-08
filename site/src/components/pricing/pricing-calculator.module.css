@@ -240,6 +240,12 @@
   color: rgba(16, 32, 51, 0.62);
 }
 
+.resultNote {
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: rgba(16, 32, 51, 0.56);
+}
+
 .resultValue {
   font-size: 1.65rem;
   font-weight: 700;

@@ -246,7 +246,7 @@ export function PricingCalculator({
           <span className={styles.heroEyebrow}>手机租金计算</span>
           <h1 className={styles.heroTitle}>手机租金计算</h1>
           <p className={styles.heroBody}>
-            选择机型并输入成交价，快速查看首付、月供、6期结清、9期结清和12期买断尾款。
+            选择机型并输入成交价，快速查看押金加首期1元、11期月供和12期买断尾款。
           </p>
         </div>
         <div className={styles.heroMeta}>

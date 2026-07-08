@@ -16,6 +16,8 @@ export interface QuoteInput {
 export interface QuoteResult {
   ageBucket: AgeBucket;
   rule: PricingRule;
+  deposit: number;
+  firstInstallment: number;
   firstPay: number;
   rentCap: number;
   costCap: number;
@@ -148,13 +150,14 @@ export function calculateQuote(input: QuoteInput): QuoteResult {
   const rule = getApplicableRule(input.product, input.asOfDate);
   const ageBucket = getAgeBucket(input.product.launchDate, input.asOfDate);
   const basePrice = new Decimal(input.product.basePrice);
-  const firstPayExact =
+  const depositExact =
     input.customFirstPay !== undefined
-      ? new Decimal(input.customFirstPay).plus(1)
+      ? new Decimal(input.customFirstPay)
       : new Decimal(input.inputPrice)
           .mul(input.downPaymentRatio ?? 35)
-          .div(100)
-          .plus(1);
+          .div(100);
+  const firstInstallmentExact = new Decimal(1);
+  const firstPayExact = depositExact.plus(firstInstallmentExact);
   const rentCap = basePrice.mul(rule.rentRate);
   const costCap = basePrice.mul(rule.costRate);
   const residualMin = basePrice.mul(rule.residualMinRate);
@@ -165,13 +168,15 @@ export function calculateQuote(input: QuoteInput): QuoteResult {
     rule.residualMaxRate,
   );
   const buyoutTail = basePrice.mul(defaultResidualRate);
-  const monthly = Decimal.max(rentCap.minus(firstPayExact).div(11), 0);
+  const monthly = Decimal.max(rentCap.minus(firstInstallmentExact).div(11), 0);
   const settle9 = buyoutTail.plus(monthly.mul(3));
   const settle6 = buyoutTail.plus(monthly.mul(6));
 
   return {
     ageBucket,
     rule,
+    deposit: roundMoney(depositExact),
+    firstInstallment: roundMoney(firstInstallmentExact),
     firstPay: roundMoney(firstPayExact),
     rentCap: roundMoney(rentCap),
     costCap: roundMoney(costCap),

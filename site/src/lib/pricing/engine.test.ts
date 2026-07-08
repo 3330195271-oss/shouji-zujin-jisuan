@@ -18,7 +18,7 @@ describe("pricing engine", () => {
     expect(getAgeBucket("2023-06-01", "2026-07-02")).toBe("gt_37_months");
   });
 
-  it("applies the +1 rule to ratio and custom first-pay paths", () => {
+  it("adds a fixed 1 yuan first installment on top of the deposit", () => {
     expect(calculateFirstPay({ inputPrice: 10000, downPaymentRatio: 35 })).toBe(
       3501,
     );
@@ -56,13 +56,13 @@ describe("pricing engine", () => {
     expect(quote.firstPay).toBe(3501);
     expect(quote.rentCap).toBe(5849.35);
     expect(quote.buyoutTail).toBe(2699.7);
-    expect(quote.monthly).toBe(213.49);
-    expect(quote.settle9).toBe(3340.16);
-    expect(quote.settle6).toBe(3980.62);
+    expect(quote.monthly).toBe(531.67);
+    expect(quote.settle9).toBe(4294.7);
+    expect(quote.settle6).toBe(5889.71);
     expect(quote.settle12).toBe(2699.7);
   });
 
-  it("clamps monthly to zero when first pay exceeds the rent cap", () => {
+  it("does not let the deposit change the 11-period monthly rent schedule", () => {
     const product = getProductById("apple-iphone-17-256gb-new");
 
     const quote = calculateQuote({
@@ -73,7 +73,7 @@ describe("pricing engine", () => {
     });
 
     expect(quote.firstPay).toBe(5001);
-    expect(quote.monthly).toBe(0);
+    expect(quote.monthly).toBe(436.2);
     expect(quote.settle12).toBe(2999.5);
   });
 });

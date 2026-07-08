@@ -14,7 +14,7 @@ const jetbrainsMono = JetBrains_Mono({
 
 export const metadata: Metadata = {
   title: "手机租金计算",
-  description: "选择机型并输入成交价，快速查看首付、月供和买断尾款。",
+  description: "选择机型并输入成交价，快速查看押金加首期1元、11期月供和买断尾款。",
 };
 
 export default function RootLayout({

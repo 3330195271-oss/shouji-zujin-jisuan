@@ -65,13 +65,16 @@ export function PricingResults({
       {quote ? (
         <div className={styles.resultGrid}>
           <article className={styles.resultCard}>
-            <span className={styles.resultLabel}>首付</span>
+            <span className={styles.resultLabel}>首付合计</span>
             <strong className={styles.resultValue}>
               {formatMoney(quote.firstPay)}
             </strong>
+            <span className={styles.resultNote}>
+              押金 {formatMoney(quote.deposit)} + 首期 {formatMoney(quote.firstInstallment)}
+            </span>
           </article>
           <article className={styles.resultCard}>
-            <span className={styles.resultLabel}>月供</span>
+            <span className={styles.resultLabel}>月供（11期）</span>
             <strong className={styles.resultValue}>
               {formatMoney(quote.monthly)}
             </strong>
@@ -101,7 +104,7 @@ export function PricingResults({
             {isPending ? "正在计算结果..." : "选择机型后点击立即试算"}
           </p>
           <p className={styles.emptyBody}>
-            我们会根据机型上市日期、成色和支付宝规则分档，自动计算首付、月供和买断尾款。
+            我们会根据机型上市日期、成色和支付宝规则分档，自动计算押金、首期1元、11期月供和买断尾款。
           </p>
         </div>
       )}

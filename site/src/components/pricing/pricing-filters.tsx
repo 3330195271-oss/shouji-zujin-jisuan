@@ -138,9 +138,9 @@ export function PricingFilters({
         </label>
 
         <label className={styles.field}>
-          <span className={styles.fieldLabel}>首付比例</span>
+          <span className={styles.fieldLabel}>押金比例</span>
           <input
-            aria-label="首付比例"
+            aria-label="押金比例"
             className={styles.input}
             inputMode="decimal"
             type="number"
@@ -154,9 +154,9 @@ export function PricingFilters({
         </label>
 
         <label className={`${styles.field} ${styles.fieldWide}`}>
-          <span className={styles.fieldLabel}>自定义首付</span>
+          <span className={styles.fieldLabel}>自定义押金</span>
           <input
-            aria-label="自定义首付"
+            aria-label="自定义押金"
             className={styles.input}
             inputMode="decimal"
             type="number"
@@ -165,7 +165,7 @@ export function PricingFilters({
             onChange={(event) =>
               onCustomFirstPayChange(event.currentTarget.value)
             }
-            placeholder="留空则按首付比例计算"
+            placeholder="留空则按押金比例计算"
           />
         </label>
       </div>

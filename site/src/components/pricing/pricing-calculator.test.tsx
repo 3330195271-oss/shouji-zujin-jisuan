@@ -24,9 +24,11 @@ describe("pricing calculator", () => {
     ).toBeInTheDocument();
     expect(
       screen.getByText(
-        "选择机型并输入成交价，快速查看首付、月供、6期结清、9期结清和12期买断尾款。",
+        "选择机型并输入成交价，快速查看押金加首期1元、11期月供和12期买断尾款。",
       ),
     ).toBeInTheDocument();
+    expect(screen.getByLabelText("押金比例")).toBeInTheDocument();
+    expect(screen.getByLabelText("自定义押金")).toBeInTheDocument();
     expect(screen.queryByText("产品结构：对齐 9d88")).not.toBeInTheDocument();
     expect(screen.queryByText("计算方式：规则引擎")).not.toBeInTheDocument();
   });
@@ -54,9 +56,9 @@ describe("pricing calculator", () => {
     await user.type(screen.getByLabelText("成交价"), "10000");
     await user.click(screen.getByRole("button", { name: "立即试算" }));
 
-    expect(await screen.findByText("¥213.49")).toBeInTheDocument();
+    expect(await screen.findByText("¥531.67")).toBeInTheDocument();
     expect(screen.getByText("¥2,699.70")).toBeInTheDocument();
-    expect(screen.getByText("¥3,340.16")).toBeInTheDocument();
+    expect(screen.getByText("¥4,294.70")).toBeInTheDocument();
     await waitFor(() => {
       expect(fetchMock).not.toHaveBeenCalled();
     });
