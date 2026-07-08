@@ -115,6 +115,7 @@
   gap: 0.55rem;
 }
 
+.fieldSeries,
 .fieldWide {
   grid-column: 1 / -1;
 }
@@ -171,6 +172,11 @@
 .resultValue {
   color: #102033;
   letter-spacing: -0.03em;
+}
+
+.ctaSummary {
+  display: grid;
+  gap: 0.2rem;
 }
 
 .ctaValue,
@@ -297,9 +303,49 @@
 }
 
 @media (max-width: 899px) {
-  .hero,
+  .hero {
+    display: none;
+  }
+
+  .shell,
+  .workspace,
+  .resultsColumn {
+    gap: 0.85rem;
+  }
+
   .panel {
-    padding: 1.25rem;
+    gap: 1rem;
+    padding: 1rem;
+    border-radius: 1.35rem;
+  }
+
+  .panelHeader {
+    gap: 0.2rem;
+  }
+
+  .panelTitle {
+    font-size: 1.12rem;
+  }
+
+  .formGrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.75rem;
+  }
+
+  .field {
+    gap: 0.4rem;
+  }
+
+  .fieldLabel {
+    font-size: 0.8rem;
+  }
+
+  .input,
+  .select {
+    height: 2.9rem;
+    padding: 0 0.85rem;
+    border-radius: 0.9rem;
+    font-size: 0.95rem;
   }
 
   .ctaBar,
@@ -308,7 +354,78 @@
     align-items: stretch;
   }
 
+  .ctaBar {
+    gap: 0.7rem;
+    padding: 0;
+    background: none;
+    border: none;
+    box-shadow: none;
+  }
+
+  .ctaSummary {
+    display: none;
+  }
+
   .primaryButton {
     width: 100%;
+    padding: 0.9rem 1rem;
+    box-shadow: 0 10px 24px rgba(21, 39, 64, 0.18);
+  }
+
+  .productSummary {
+    gap: 0.55rem;
+  }
+
+  .productSeries {
+    font-size: 0.98rem;
+  }
+
+  .productMeta {
+    font-size: 0.82rem;
+  }
+
+  .heroChip,
+  .productBadge {
+    padding: 0.45rem 0.75rem;
+    font-size: 0.76rem;
+  }
+
+  .resultGrid {
+    gap: 0.7rem;
+  }
+
+  .resultCard {
+    gap: 0.35rem;
+    padding: 0.9rem;
+    border-radius: 1.1rem;
+  }
+
+  .resultLabel {
+    font-size: 0.82rem;
+  }
+
+  .resultNote {
+    font-size: 0.75rem;
+    line-height: 1.35;
+  }
+
+  .resultValue {
+    font-size: 1.35rem;
+  }
+
+  .emptyState {
+    gap: 0.35rem;
+    padding: 1rem;
+    border-radius: 1.1rem;
+  }
+
+  .emptyTitle {
+    font-size: 0.95rem;
+  }
+
+  .emptyBody,
+  .errorText {
+    font-size: 0.84rem;
+    line-height: 1.55;
   }
 }

@@ -92,7 +92,7 @@ export function PricingFilters({
           </select>
         </label>
 
-        <label className={styles.field}>
+        <label className={`${styles.field} ${styles.fieldSeries}`}>
           <span className={styles.fieldLabel}>系列</span>
           <select
             aria-label="系列"

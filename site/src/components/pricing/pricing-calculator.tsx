@@ -297,7 +297,7 @@ export function PricingCalculator({
 
         <div className={styles.resultsColumn}>
           <div className={styles.ctaBar}>
-            <div>
+            <div className={styles.ctaSummary}>
               <p className={styles.ctaLabel}>当前选择</p>
               <p className={styles.ctaValue}>
                 {selectedProduct
