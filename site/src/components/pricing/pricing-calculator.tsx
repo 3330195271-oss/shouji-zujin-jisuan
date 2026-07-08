@@ -43,21 +43,31 @@ export function PricingCalculator({
     }));
   }
 
-  function getSeriesOptions(
+  function getSeriesOptions(category: ProductCategory) {
+    return uniqueValues(
+      initialProducts
+        .filter((product) => product.category === category)
+        .map((product) => product.series),
+    ).map((value) => ({
+      value,
+      label: value,
+    }));
+  }
+
+  function getSeriesConditionOptions(
     category: ProductCategory,
-    conditionType: ConditionType,
+    series: string,
   ) {
     return uniqueValues(
       initialProducts
         .filter(
           (product) =>
-            product.category === category &&
-            product.conditionType === conditionType,
+            product.category === category && product.series === series,
         )
-        .map((product) => product.series),
+        .map((product) => product.conditionType),
     ).map((value) => ({
-      value,
-      label: value,
+      value: value as ConditionType,
+      label: CONDITION_LABELS[value as ConditionType],
     }));
   }
 
@@ -125,15 +135,19 @@ export function PricingCalculator({
     label: CATEGORY_LABELS[value as ProductCategory],
   }));
 
-  const conditionOptions = getConditionOptions(selectedCategory);
-  const activeConditionType =
-    conditionOptions.find((option) => option.value === selectedConditionType)
-      ?.value ?? conditionOptions[0]?.value ?? "new";
-  const seriesOptions = getSeriesOptions(selectedCategory, activeConditionType);
+  const categoryConditionOptions = getConditionOptions(selectedCategory);
+  const seriesOptions = getSeriesOptions(selectedCategory);
   const activeSeries =
     seriesOptions.find((option) => option.value === selectedSeries)?.value ??
     seriesOptions[0]?.value ??
     "";
+  const conditionOptions = getSeriesConditionOptions(
+    selectedCategory,
+    activeSeries,
+  );
+  const activeConditionType =
+    conditionOptions.find((option) => option.value === selectedConditionType)
+      ?.value ?? conditionOptions[0]?.value ?? categoryConditionOptions[0]?.value ?? "new";
   const storageOptions = getStorageOptions(
     selectedCategory,
     activeConditionType,
@@ -170,8 +184,9 @@ export function PricingCalculator({
   }
 
   function handleCategoryChange(category: ProductCategory) {
-    const nextCondition = getConditionOptions(category)[0]?.value ?? "new";
-    const nextSeries = getSeriesOptions(category, nextCondition)[0]?.value ?? "";
+    const nextSeries = getSeriesOptions(category)[0]?.value ?? "";
+    const nextCondition =
+      getSeriesConditionOptions(category, nextSeries)[0]?.value ?? "new";
     const nextStorage =
       getStorageOptions(category, nextCondition, nextSeries)[0]?.value ?? "";
 
@@ -179,23 +194,27 @@ export function PricingCalculator({
   }
 
   function handleConditionTypeChange(conditionType: ConditionType) {
-    const nextSeries =
-      getSeriesOptions(selectedCategory, conditionType)[0]?.value ?? "";
     const nextStorage =
-      getStorageOptions(selectedCategory, conditionType, nextSeries)[0]?.value ??
+      getStorageOptions(selectedCategory, conditionType, activeSeries)[0]?.value ??
       "";
 
-    commitSelection(selectedCategory, conditionType, nextSeries, nextStorage);
+    commitSelection(selectedCategory, conditionType, activeSeries, nextStorage);
   }
 
   function handleSeriesChange(series: string) {
+    const nextCondition =
+      getSeriesConditionOptions(selectedCategory, series).find(
+        (option) => option.value === activeConditionType,
+      )?.value ??
+      getSeriesConditionOptions(selectedCategory, series)[0]?.value ??
+      "new";
     const nextStorage =
-      getStorageOptions(selectedCategory, activeConditionType, series)[0]
+      getStorageOptions(selectedCategory, nextCondition, series)[0]
         ?.value ?? "";
 
     commitSelection(
       selectedCategory,
-      activeConditionType,
+      nextCondition,
       series,
       nextStorage,
     );

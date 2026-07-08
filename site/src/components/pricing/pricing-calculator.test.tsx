@@ -33,6 +33,33 @@ describe("pricing calculator", () => {
     expect(screen.queryByText("计算方式：规则引擎")).not.toBeInTheDocument();
   });
 
+  it("keeps older used-only series visible in the series selector", () => {
+    const products = getActiveProducts();
+
+    render(<PricingCalculator initialProducts={products} />);
+
+    const seriesOptions = Array.from(
+      screen.getByLabelText("系列").querySelectorAll("option"),
+    ).map((option) => option.textContent);
+
+    expect(seriesOptions).toContain("iPhone 15");
+    expect(seriesOptions).toContain("iPhone 14");
+    expect(seriesOptions).toContain("iPhone 13");
+    expect(seriesOptions).toContain("iPhone 12");
+    expect(seriesOptions).toContain("iPhone 11");
+  });
+
+  it("switches to used when a legacy used-only series is selected", async () => {
+    const user = userEvent.setup();
+    const products = getActiveProducts();
+
+    render(<PricingCalculator initialProducts={products} />);
+
+    await user.selectOptions(screen.getByLabelText("系列"), "iPhone 11");
+
+    expect(screen.getByLabelText("成色")).toHaveValue("used");
+  });
+
   it("calculates the quote locally without using an api route", async () => {
     const user = userEvent.setup();
     const products = getActiveProducts();
