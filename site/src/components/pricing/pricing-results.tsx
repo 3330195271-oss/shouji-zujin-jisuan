@@ -42,7 +42,7 @@ export function PricingResults({
     <section className={styles.panel}>
       <div className={styles.panelHeader}>
         <span className={styles.panelEyebrow}>试算结果</span>
-        <h2 className={styles.panelTitle}>按支付宝规则输出可解释结果</h2>
+        <h2 className={styles.panelTitle}>按当前结算规则输出可解释结果</h2>
       </div>
 
       {product ? (
@@ -104,7 +104,7 @@ export function PricingResults({
             {isPending ? "正在计算结果..." : "选择机型后点击立即试算"}
           </p>
           <p className={styles.emptyBody}>
-            我们会根据机型上市日期、成色和支付宝规则分档，自动计算押金、首期1元、11期月供和买断尾款。
+            我们会根据机型上市日期、成色和当前结算规则，自动计算押金、首期1元、11期月供和买断尾款。
           </p>
         </div>
       )}

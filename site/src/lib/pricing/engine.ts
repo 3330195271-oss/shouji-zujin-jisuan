@@ -5,6 +5,12 @@ import type { AgeBucket, PricingRule, Product } from "@/lib/pricing/types";
 
 type DateInput = string | Date;
 
+const SETTLEMENT_COST_CAPS = {
+  6: 1.15,
+  9: 1.225,
+  12: 1.3,
+} as const;
+
 export interface QuoteInput {
   product: Product;
   inputPrice: number;
@@ -64,6 +70,10 @@ function addMonths(value: Date, months: number) {
 
 function roundMoney(value: Decimal.Value) {
   return new Decimal(value).toDecimalPlaces(2, Decimal.ROUND_HALF_UP).toNumber();
+}
+
+function roundSettlement(value: Decimal.Value) {
+  return new Decimal(value).toDecimalPlaces(0, Decimal.ROUND_HALF_UP).toNumber();
 }
 
 export function getAgeBucket(launchDate: string, asOfDate: DateInput = new Date()) {
@@ -142,6 +152,7 @@ export function calculateQuote(input: QuoteInput): QuoteResult {
   const rule = getApplicableRule(input.product, input.asOfDate);
   const ageBucket = getAgeBucket(input.product.launchDate, input.asOfDate);
   const basePrice = new Decimal(input.product.basePrice);
+  const dealPrice = new Decimal(input.inputPrice);
   const depositExact =
     input.customFirstPay !== undefined
       ? new Decimal(input.customFirstPay)
@@ -154,11 +165,23 @@ export function calculateQuote(input: QuoteInput): QuoteResult {
   const costCap = basePrice.mul(rule.costRate);
   const residualMin = basePrice.mul(rule.residualMinRate);
   const residualMax = basePrice.mul(rule.residualMaxRate);
-  const defaultResidualRate = new Decimal(rule.residualMaxRate);
-  const buyoutTail = basePrice.mul(defaultResidualRate);
-  const monthly = Decimal.max(rentCap.minus(firstInstallmentExact).div(11), 0);
-  const settle9 = buyoutTail.plus(monthly.mul(3));
-  const settle6 = buyoutTail.plus(monthly.mul(6));
+  const monthlyExact = Decimal.max(rentCap.minus(firstInstallmentExact).div(11), 0);
+  const settle6Exact = dealPrice
+    .mul(SETTLEMENT_COST_CAPS[6])
+    .minus(firstPayExact)
+    .minus(monthlyExact.mul(5));
+  const settle9Exact = dealPrice
+    .mul(SETTLEMENT_COST_CAPS[9])
+    .minus(firstPayExact)
+    .minus(monthlyExact.mul(8));
+  const settle12Exact = dealPrice
+    .mul(SETTLEMENT_COST_CAPS[12])
+    .minus(firstPayExact)
+    .minus(monthlyExact.mul(11));
+  const defaultResidualRate = dealPrice.eq(0)
+    ? new Decimal(0)
+    : settle12Exact.div(dealPrice);
+  const buyoutTail = settle12Exact;
 
   return {
     ageBucket,
@@ -171,10 +194,10 @@ export function calculateQuote(input: QuoteInput): QuoteResult {
     residualMin: roundMoney(residualMin),
     residualMax: roundMoney(residualMax),
     defaultResidualRate: Number(defaultResidualRate.toFixed(4)),
-    buyoutTail: roundMoney(buyoutTail),
-    monthly: roundMoney(monthly),
-    settle6: roundMoney(settle6),
-    settle9: roundMoney(settle9),
-    settle12: roundMoney(buyoutTail),
+    buyoutTail: roundSettlement(buyoutTail),
+    monthly: roundMoney(monthlyExact),
+    settle6: roundSettlement(settle6Exact),
+    settle9: roundSettlement(settle9Exact),
+    settle12: roundSettlement(settle12Exact),
   };
 }
