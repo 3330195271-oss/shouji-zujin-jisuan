@@ -57,8 +57,8 @@ describe("pricing calculator", () => {
     await user.click(screen.getByRole("button", { name: "立即试算" }));
 
     expect(await screen.findByText("¥531.67")).toBeInTheDocument();
-    expect(screen.getByText("¥2,699.70")).toBeInTheDocument();
-    expect(screen.getByText("¥4,294.70")).toBeInTheDocument();
+    expect(screen.getByText("¥4,499.50")).toBeInTheDocument();
+    expect(screen.getByText("¥6,094.50")).toBeInTheDocument();
     await waitFor(() => {
       expect(fetchMock).not.toHaveBeenCalled();
     });

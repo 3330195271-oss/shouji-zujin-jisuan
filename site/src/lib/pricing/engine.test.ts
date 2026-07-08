@@ -42,7 +42,7 @@ describe("pricing engine", () => {
     });
   });
 
-  it("calculates a quote from the Alipay rule bucket instead of 9d88 caps", () => {
+  it("uses the Alipay upper residual bound as the 12-month buyout tail", () => {
     const product = getProductById("apple-iphone-16-pro-256gb-used");
 
     const quote = calculateQuote({
@@ -55,11 +55,11 @@ describe("pricing engine", () => {
     expect(quote.ageBucket).toBe("gt_13_lte_25_months");
     expect(quote.firstPay).toBe(3501);
     expect(quote.rentCap).toBe(5849.35);
-    expect(quote.buyoutTail).toBe(2699.7);
+    expect(quote.buyoutTail).toBe(4499.5);
     expect(quote.monthly).toBe(531.67);
-    expect(quote.settle9).toBe(4294.7);
-    expect(quote.settle6).toBe(5889.71);
-    expect(quote.settle12).toBe(2699.7);
+    expect(quote.settle9).toBe(6094.5);
+    expect(quote.settle6).toBe(7689.51);
+    expect(quote.settle12).toBe(4499.5);
   });
 
   it("does not let the deposit change the 11-period monthly rent schedule", () => {
@@ -74,6 +74,6 @@ describe("pricing engine", () => {
 
     expect(quote.firstPay).toBe(5001);
     expect(quote.monthly).toBe(436.2);
-    expect(quote.settle12).toBe(2999.5);
+    expect(quote.settle12).toBe(3599.4);
   });
 });

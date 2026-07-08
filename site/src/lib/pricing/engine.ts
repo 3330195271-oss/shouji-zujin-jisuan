@@ -66,14 +66,6 @@ function roundMoney(value: Decimal.Value) {
   return new Decimal(value).toDecimalPlaces(2, Decimal.ROUND_HALF_UP).toNumber();
 }
 
-function clampDecimal(
-  value: Decimal,
-  min: Decimal.Value,
-  max: Decimal.Value,
-) {
-  return Decimal.min(Decimal.max(value, min), max);
-}
-
 export function getAgeBucket(launchDate: string, asOfDate: DateInput = new Date()) {
   const launch = parseDateInput(launchDate);
   const asOf = parseDateInput(asOfDate);
@@ -162,11 +154,7 @@ export function calculateQuote(input: QuoteInput): QuoteResult {
   const costCap = basePrice.mul(rule.costRate);
   const residualMin = basePrice.mul(rule.residualMinRate);
   const residualMax = basePrice.mul(rule.residualMaxRate);
-  const defaultResidualRate = clampDecimal(
-    new Decimal(rule.costRate).minus(rule.rentRate),
-    rule.residualMinRate,
-    rule.residualMaxRate,
-  );
+  const defaultResidualRate = new Decimal(rule.residualMaxRate);
   const buyoutTail = basePrice.mul(defaultResidualRate);
   const monthly = Decimal.max(rentCap.minus(firstInstallmentExact).div(11), 0);
   const settle9 = buyoutTail.plus(monthly.mul(3));
